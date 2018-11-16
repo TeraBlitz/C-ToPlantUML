@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  
+<script type="text/javascript" src="jquery_plantuml.js"></script>
+    </head>
+<body>
+    <div>
+            <textarea style="width:45%;height: 500px" id="send">
+
+                </textarea>
+                
+                <textarea style="width:45%;height: 500px" id="recive">
+                    
+                </textarea>
+    </div>
+    
+
+    <button onclick="getConsulta()">Send</button>
+    <div>
+
+            <img id="img" uml="
+            Raul->AngeeBB : foo
+            Bob<--Alice : foo
+            ">
+    </div>
+</body>
+<script>
+  function getConsulta() {
+    //var d=document.getElementById('desde').value;
+    //var a="class Shape {        public:           void setWidth(int w) {              width = w;           }           void setHeight(int h) {              height = h;           }                 protected:           int width;           int height;     };     class Rectangle: public Shape {        public:           int getArea() {               return (width * height);            }     };";
+    //alert(a);
+    let a=document.getElementById("send").value;
+    jQuery.ajax({
+    url: "http://10.49.70.45:4000/convert",
+    data: a,
+    type: "POST",
+    dataType:"text",
+    headers: {
+        'Content-Type': 'text/plain'
+    },
+    success:function(data){
+        document.getElementById("recive").innerHTML=data;
+        $("#img").attr("uml",data);
+        $("#img").removeAttr("src");
+        plantuml_runonce();
+    },
+    error:function (err){
+        console.log(err);
+    }
+    });
+    
+}
+</script>
+</html>
